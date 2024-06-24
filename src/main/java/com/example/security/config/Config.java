@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -46,9 +47,10 @@ public class Config {
         // Настройка доступа к конечным точкам
         .authorizeHttpRequests(request -> request
             // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
-            .requestMatchers("/auth/**").permitAll()
-            .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-            .requestMatchers("/endpoint", "/admin/**").hasRole("ADMIN")
+            .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**", "/swagger-resources/*")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher( "/v3/api-docs/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/endpoint", "/admin/**")).hasRole("ADMIN")
             .anyRequest().authenticated())
         .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
         .authenticationProvider(authenticationProvider())

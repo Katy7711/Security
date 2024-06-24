@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
   //Создание пользователя
   @Override
   public void create(User user) {
-    if (userRepository.existsByUsername(user.getUsername())) {
+    if (userRepository.existsByUserName(user.getUsername())) {
       throw new RuntimeException("Пользователь с таким именем уже существует");
     }
     if (userRepository.existsByEmail(user.getEmail())) {
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
   //Получение пользователя по имени пользователя
   @Override
   public User getByUsername(String username) {
-    return userRepository.findByUsername(username)
+    return userRepository.findByUserName(username)
         .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
   }

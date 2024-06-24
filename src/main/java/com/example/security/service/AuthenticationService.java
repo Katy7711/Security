@@ -28,13 +28,13 @@ public class AuthenticationService {
   public JwtAuthenticationResponse signUp(SignUpRequest request) {
 
     UserDetails user = User.builder()
-        .username(request.getUsername())
+        .username(request.getUserName())
         .password(passwordEncoder.encode(request.getPassword()))
         .roles("USER")
         .build();
 
     com.example.security.entity.User user1 = new com.example.security.entity.User();
-    user1.setUserName(request.getUsername());
+    user1.setUserName(request.getUserName());
     user1.setPassword(passwordEncoder.encode(request.getPassword()));
     user1.setEmail(request.getEmail());
     user1.setRole(USER);
@@ -48,13 +48,13 @@ public class AuthenticationService {
   //Аутентификация пользователя
   public JwtAuthenticationResponse signIn(SignInRequest request) {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-        request.getUsername(),
+        request.getUserName(),
         request.getPassword()
     ));
 
     var user = userService
         .userDetailsService()
-        .loadUserByUsername(request.getUsername());
+        .loadUserByUsername(request.getUserName());
 
     var jwt = jwtService.generateToken(user);
     return new JwtAuthenticationResponse(jwt);

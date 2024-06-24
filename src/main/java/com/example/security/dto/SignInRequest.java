@@ -9,7 +9,7 @@ import lombok.Data;
 public class SignInRequest {
   @Size(min = 2, max = 50)
   @NotBlank()
-  private String username;
+  private String userName;
 
   @Size(min = 8, max = 255)
   @NotBlank()
